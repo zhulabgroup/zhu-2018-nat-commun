@@ -1,10 +1,10 @@
 library(tidyverse)
 theme_set(theme_bw())
 
-all.dat <- read_rds("Data/all_dat.rds")
-env.stat <- read_rds("Data/env_stat.rds")
+all.dat <- read_rds("data/all_dat.rds")
+env.stat <- read_rds("data/env_stat.rds")
 
-coef.ci <- read_rds("Models/old_jags_2e4_sum.rds")
+coef.ci <- read_rds("models/old_jags_2e4_sum.rds")
 
 coef.med <- coef.ci %>%
   unite(para_coef, para, coef, sep = ".") %>%
@@ -29,7 +29,7 @@ wis.dat <- all.dat %>%
   select(src, cen, ft, plt, lon, lat, sag, tmp, ppt, agb, agb.mod, mu, r.sat) %>%
   arrange(src, cen, ft) %>%
   mutate(sag.cls = cut(sag, sag.brk, include.lowest = T, dig.lab = 10))
-write_rds(wis.dat, "Models/wis_dat.rds")
+write_rds(wis.dat, "models/wis_dat.rds")
 
 # boxplot to compare observed vs modeled
 wis.dat %>%
@@ -42,7 +42,7 @@ wis.dat %>%
   facet_wrap(~ft, scale = "free_y", nrow = 6, ncol = 4) +
   theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = .5)) +
   labs(x = "Stand age (yr)", y = expression("Aboveground biomass (Mg" ~ ha^-1 * ")"))
-ggsave("Figures/Model vs. within-sample data.pdf", w = 10, h = 12)
+ggsave("figures/model vs. within-sample data.pdf", w = 10, h = 12)
 
 # For past data, out-of-sample prediction ---------------------------------
 
@@ -57,7 +57,7 @@ oos.dat <- all.dat %>%
   select(src, cen, ft, plt, lon, lat, sag, tmp, ppt, agb, agb.mod) %>%
   arrange(src, cen, ft) %>%
   mutate(sag.cls = cut(sag, sag.brk, include.lowest = T, dig.lab = 10))
-write_rds(oos.dat, "Models/oos_dat.rds")
+write_rds(oos.dat, "models/oos_dat.rds")
 
 # boxplot
 oos.dat %>%
@@ -69,14 +69,14 @@ oos.dat %>%
   facet_wrap(~ft, scale = "free_y", nrow = 6, ncol = 4) +
   theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = .5)) +
   labs(x = "Stand age (yr)", y = expression("Aboveground biomass (Mg" ~ ha^-1 * ")"))
-ggsave("Figures/Model vs. out-of-sample data.pdf", w = 10, h = 12)
+ggsave("figures/model vs. out-of-sample data.pdf", w = 10, h = 12)
 
 # For future data, out-of-sample prediction (projection) ------------------
 
 agb.fut.dat <- NULL
 for (rcp.tag in c("rcp45", "rcp85")) { # loop through rcp and future years
   for (fyr.tag in c("2025", "2055", "2085")) {
-    clim.file <- paste0("Data/CMIP_", rcp.tag, "_", fyr.tag, ".csv")
+    clim.file <- paste0("data/CMIP_", rcp.tag, "_", fyr.tag, ".csv")
 
     pred.dat <- all.dat %>%
       select(src:agb) %>%
@@ -114,4 +114,4 @@ fut.dat <- pred.dat %>%
   ) %>%
   mutate(agb.rat = agb.cur / agb.fut) %>% # modeled current/modeled future
   filter(agb.rat > 0, agb.rat < 10)
-write_rds(fut.dat, "Models/fut_dat.rds")
+write_rds(fut.dat, "models/fut_dat.rds")

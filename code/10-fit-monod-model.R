@@ -1,7 +1,7 @@
 library(tidyverse)
 library(R2jags)
 
-jags.dat <- read_rds("Data/jags_dat.rds")
+jags.dat <- read_rds("data/jags_dat.rds")
 
 # JAGS code ---------------------------------------------------------------
 
@@ -41,4 +41,4 @@ monod.jags <- jags.parallel(
   parameters.to.save = monod.par,
   n.chains = 5, n.iter = 2e5
 )
-write_rds(monod.jags, "Models/new_monod_jags_2e5.rds")
+write_rds(monod.jags, "models/new_monod_jags_2e5.rds")

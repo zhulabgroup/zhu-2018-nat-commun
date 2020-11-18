@@ -5,7 +5,7 @@ theme_set(theme_bw())
 # Raw data ----------------------------------------------------------------
 
 # Read CSV data file
-all.dat <- read.csv("Data/All_data.csv", stringsAsFactors = F) %>% as_tibble() # can't use read_csv
+all.dat <- read.csv("data/All_data.csv", stringsAsFactors = F) %>% as_tibble() # can't use read_csv
 
 # Regional standardization of climate variables
 env.stat <- all.dat %>%
@@ -42,10 +42,10 @@ jags.dat$ft <- as.numeric(in.dat$ft) # region index, vector
 jags.dat$n.plt <- nrow(in.dat) # no. of plots
 jags.dat$n.ft <- nrow(ft.dat) # no. of regions
 
-write_rds(all.dat, "Data/all_dat.rds")
-write_rds(env.stat, "Data/env_stat.rds")
-write_rds(ft.dat, "Data/ft_dat.rds")
-write_rds(jags.dat, "Data/jags_dat.rds")
+write_rds(all.dat, "data/all_dat.rds")
+write_rds(env.stat, "data/env_stat.rds")
+write_rds(ft.dat, "data/ft_dat.rds")
+write_rds(jags.dat, "data/jags_dat.rds")
 
 # Historgams for sample sizes ---------------------------------------------
 
@@ -57,7 +57,7 @@ all.dat %>%
   facet_wrap(~ft, scale = "free", nrow = 6, ncol = 4) +
   labs(x = "Stand age (yr)", y = "Percentage of plots") +
   scale_y_continuous(labels = scales::percent)
-ggsave("Figures/Histogram of current plot percentage.pdf", w = 10, h = 12)
+ggsave("figures/Histogram of current plot percentage.pdf", w = 10, h = 12)
 
 # past -- do not show
 all.dat %>%
@@ -67,7 +67,7 @@ all.dat %>%
   facet_wrap(~ft, scale = "free", nrow = 6, ncol = 4) +
   labs(x = "Stand age (yr)", y = "Percentage of plots") +
   scale_y_continuous(labels = scales::percent)
-ggsave("Figures/Histogram of past plot percentage.pdf", w = 10, h = 12)
+ggsave("figures/Histogram of past plot percentage.pdf", w = 10, h = 12)
 
 # both current and past
 all.dat %>%
@@ -84,4 +84,4 @@ all.dat %>%
   ) +
   scale_y_continuous(labels = scales::percent) +
   theme(legend.position = c(0.885, 0.075))
-ggsave("Figures/Histogram of current and past plot percentage.pdf", w = 10, h = 12)
+ggsave("figures/Histogram of current and past plot percentage.pdf", w = 10, h = 12)

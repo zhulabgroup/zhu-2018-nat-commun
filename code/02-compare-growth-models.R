@@ -5,7 +5,7 @@ theme_set(theme_bw())
 
 # Fit different growth models ---------------------------------------------
 
-byft.dat <- read_rds("Data/all_dat.rds") %>%
+byft.dat <- read_rds("data/all_dat.rds") %>%
   select(src:agb) %>%
   filter(cen == "new") %>%
   group_by(ft) %>%
@@ -72,7 +72,7 @@ pred.dat %>%
   ) +
   scale_color_manual(values = mod.col) +
   theme(legend.position = c(0.9, 0.075))
-ggsave("Figures/Compare growth model curves.pdf", w = 10, h = 12)
+ggsave("figures/Compare growth model curves.pdf", w = 10, h = 12)
 
 # Calculate AICs ----------------------------------------------------------
 
@@ -88,8 +88,8 @@ byft.mod %>%
   ggplot(aes(model, aic, col = model)) +
   geom_point() +
   facet_wrap(~ft, scale = "free_y", nrow = 6, ncol = 4) +
-  labs(x = "Model", y = "AIC score") +
+  labs(x = "model", y = "AIC score") +
   scale_color_manual(values = mod.col) +
   guides(col = F) +
   theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = .5))
-ggsave("Figures/Compare growth model AICs.pdf", w = 10, h = 12)
+ggsave("figures/Compare growth model AICs.pdf", w = 10, h = 12)

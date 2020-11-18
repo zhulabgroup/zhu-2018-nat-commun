@@ -1,16 +1,16 @@
 library(tidyverse)
 library(tmap)
 
-cur.dat <- read_rds("Models/wis_dat.rds")
-fut.dat <- read_rds("Models/fut_dat.rds")
-pst.dat <- read_rds("Models/oos_dat.rds") # past obs and modeled
+cur.dat <- read_rds("models/wis_dat.rds")
+fut.dat <- read_rds("models/fut_dat.rds")
+pst.dat <- read_rds("models/oos_dat.rds") # past obs and modeled
 
 # Rasterize data ----------------------------------------------------------
 
 rasterize_north_america <- function(xyz.dat, fun = mean, res = 10, dl.path = tempdir()) {
   # function to rasterize at 10 min by 10 min resolution, using WorldClim as reference
 
-  ref.ras <- raster::getData("worldclim", var = "bio", res = res, download = T, path = dl.path)
+  ref.ras <- raster::getdata("worldclim", var = "bio", res = res, download = T, path = dl.path)
 
   xyz.dat <- as.data.frame(xyz.dat)
   xyz.ras <- raster::rasterize(xyz.dat[, 1:2], ref.ras, xyz.dat[, -(1:2)], fun = fun) # fun = mean
@@ -28,7 +28,7 @@ cur.ras <- cur.dat %>%
   rasterize_north_america(res = 10) %>% # res = 2.5, 5, 10. small = slow
   raster::aggregate(fact = 2) %>%
   raster::rasterToPolygons()
-write_rds(cur.ras, "Models/cur_ras.rds")
+write_rds(cur.ras, "models/cur_ras.rds")
 
 fut.ras <- fut.dat %>%
   select(ft:scn, agb.fut) %>%
@@ -45,14 +45,14 @@ fut.ras <- fut.dat %>%
   rasterize_north_america(res = 10) %>% # res = 2.5, 5, 10. small = slow
   raster::aggregate(fact = 2) %>%
   raster::rasterToPolygons()
-write_rds(fut.ras, "Models/fut_ras.rds")
+write_rds(fut.ras, "models/fut_ras.rds")
 
 pst.ras <- pst.dat %>%
   select(x = lon, y = lat, agb_pst_obs = agb, agb_pst_mod = agb.mod) %>%
   rasterize_north_america(res = 10) %>% # res = 2.5, 5, 10. small = slow
   raster::aggregate(fact = 2) %>%
   raster::rasterToPolygons()
-write_rds(pst.ras, "Models/pst_ras.rds")
+write_rds(pst.ras, "models/pst_ras.rds")
 
 # Plot maps ---------------------------------------------------------------
 
@@ -77,7 +77,7 @@ col.vec <- c(
 )
 
 # north america maps
-bkgd.poly <- read_rds("Data/NA_shp.rds")
+bkgd.poly <- read_rds("data/NA_shp.rds")
 col.brk.bio <- c(-Inf, seq(50, 550, by = 50), Inf)
 col.brk.rat <- c(-Inf, seq(.1, .9, by = .1), Inf) * 100
 col.brk.bio.past <- c(-Inf, seq(50, 400, by = 50), Inf)
@@ -94,14 +94,14 @@ cur.tm <- tm_shape(cur.ras) +
     asp = 1, # square shape
     title = c(
       "Observed aboveground biomass (2000 - 2016)",
-      "Modeled aboveground biomass (2000 - 2016)"
+      "modeled aboveground biomass (2000 - 2016)"
     ),
     legend.title.size = 1,
     legend.text.size = 0.5,
     legend.position = c("left", "bottom")
   )
 print(cur.tm)
-tmap_save(cur.tm, file = "Figures/Map of current AGB.pdf", w = 10, h = 5)
+tmap_save(cur.tm, file = "figures/Map of current AGB.pdf", w = 10, h = 5)
 
 # map 2, future AGB and ratio
 fut.ras$agb_fut_mod <- fut.ras$agb_2085_rcp85
@@ -124,7 +124,7 @@ fut.tm <- tm_shape(fut.ras) +
     legend.position = c("left", "bottom")
   )
 print(fut.tm)
-tmap_save(fut.tm, file = "Figures/Map of future AGB.pdf", w = 10, h = 5)
+tmap_save(fut.tm, file = "figures/Map of future AGB.pdf", w = 10, h = 5)
 
 # map 3, observed and modeled prior-1999
 pst.tm <- tm_shape(pst.ras) +
@@ -138,14 +138,14 @@ pst.tm <- tm_shape(pst.ras) +
     asp = 1, # square shape
     title = c(
       "Observed aboveground biomass (1990 - 1999)",
-      "Modeled aboveground biomass (1990 - 1999)"
+      "modeled aboveground biomass (1990 - 1999)"
     ),
     legend.title.size = 1,
     legend.text.size = 0.5,
     legend.position = c("left", "bottom")
   )
 print(pst.tm)
-tmap_save(pst.tm, file = "Figures/Map of past AGB.pdf", w = 10, h = 5)
+tmap_save(pst.tm, file = "figures/Map of past AGB.pdf", w = 10, h = 5)
 
 # # Interactive maps? -------------------------------------------------------
 # # only lat lon projection

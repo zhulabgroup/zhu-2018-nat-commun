@@ -2,12 +2,12 @@ library(tidyverse)
 library(R2jags)
 library(ggmcmc)
 
-ft.dat <- read_rds("Data/ft_dat.rds")
-env.stat <- read_rds("Data/env_stat.rds")
+ft.dat <- read_rds("data/ft_dat.rds")
+env.stat <- read_rds("data/env_stat.rds")
 
 # Coefficient means and CI ------------------------------------------------
 
-coef.std.ci <- read_rds("Models/new_jags_2e5.rds") %>%
+coef.std.ci <- read_rds("models/new_jags_2e5.rds") %>%
   coda::as.mcmc() %>%
   ggs() %>%
   ci() %>%
@@ -20,7 +20,7 @@ coef.ci <- coef.std.ci %>%
   full_join(ft.dat %>% select(ft.id = id, ft)) %>%
   select(para, coef, ft, low, Low, median, High, high) %>% # low and high are 95% CI, Low and High are 90% CI
   arrange(para, coef, ft)
-write_rds(coef.ci, "Models/new_jags_2e5_sum.rds")
+write_rds(coef.ci, "models/new_jags_2e5_sum.rds")
 
 # Make a table ------------------------------------------------------------
 
@@ -49,4 +49,4 @@ coef.tab %>%
   ) %>%
   select(ft, nm, val) %>%
   spread(nm, val)
-write_csv(coef.tab, "Tables/Coefficient table (2e5).csv")
+write_csv(coef.tab, "tables/Coefficient table (2e5).csv")

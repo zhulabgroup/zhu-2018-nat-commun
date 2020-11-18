@@ -2,9 +2,9 @@ library(tidyverse)
 library(sp)
 library(SpatialPack)
 
-cur.ras <- read_rds("Models/cur_ras.rds")
-fut.ras <- read_rds("Models/fut_ras.rds")
-pst.ras <- read_rds("Models/pst_ras.rds")
+cur.ras <- read_rds("models/cur_ras.rds")
+fut.ras <- read_rds("models/fut_ras.rds")
+pst.ras <- read_rds("models/pst_ras.rds")
 
 # Spatial correlation tests -----------------------------------------------
 
@@ -68,7 +68,7 @@ ras.sum %>%
   theme_classic() +
   theme(legend.position = "none", text = element_text(size = 14)) +
   annotate("text", 1 - .2, 200, label = "Observed", col = scn.col["obs"]) +
-  annotate("text", 1 + .2, 200, label = "Modeled", col = scn.col["mod"]) +
+  annotate("text", 1 + .2, 200, label = "modeled", col = scn.col["mod"]) +
   annotate("text", 2 - .2, 200, label = "RCP4.5", col = scn.col["rcp45"]) +
   annotate("text", 2 + .2, 200, label = "RCP8.5", col = scn.col["rcp85"])
-ggsave("Figures/Current and future AGB.pdf", w = 8, h = 8 * .618)
+ggsave("figures/Current and future AGB.pdf", w = 8, h = 8 * .618)
