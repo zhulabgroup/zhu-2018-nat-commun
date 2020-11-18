@@ -1,0 +1,1 @@
+Zhu, Kai, Jian Zhang, Shuli Niu, Chengjin Chu, and Yiqi Luo. “Limits to Growth of Forest Biomass Carbon Sink under Climate Change.” Nature Communications 9, no. 1 (2018): 2709–2709. https://doi.org/10.1038/s41467-018-05132-5.
