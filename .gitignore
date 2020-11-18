@@ -1,3 +1,9 @@
+# This project
+/data
+/Data
+/models
+/Models
+
 # History files
 .Rhistory
 .Rapp.history
