@@ -1,4 +1,4 @@
-# revision for Nature Comm, code to be published
+# prepare data to fit models
 library(tidyverse)
 theme_set(theme_bw())
 

@@ -1,3 +1,4 @@
+# summarize fitted coefficients
 library(tidyverse)
 library(R2jags)
 library(ggmcmc)
@@ -49,4 +50,4 @@ coef.tab %>%
   ) %>%
   select(ft, nm, val) %>%
   spread(nm, val)
-write_csv(coef.tab, "tables/Coefficient table (2e5).csv")
+write_csv(coef.tab, "figures/Coefficient table.csv")

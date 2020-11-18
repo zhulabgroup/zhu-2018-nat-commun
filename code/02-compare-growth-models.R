@@ -1,4 +1,4 @@
-# Compare different growth models to show they're almost the same
+# compare different growth models
 library(tidyverse)
 library(modelr)
 theme_set(theme_bw())

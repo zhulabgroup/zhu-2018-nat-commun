@@ -1,3 +1,4 @@
+# use model output and data to make maps
 library(tidyverse)
 library(tmap)
 
@@ -10,7 +11,7 @@ pst.dat <- read_rds("models/oos_dat.rds") # past obs and modeled
 rasterize_north_america <- function(xyz.dat, fun = mean, res = 10, dl.path = tempdir()) {
   # function to rasterize at 10 min by 10 min resolution, using WorldClim as reference
 
-  ref.ras <- raster::getdata("worldclim", var = "bio", res = res, download = T, path = dl.path)
+  ref.ras <- raster::getData("worldclim", var = "bio", res = res, download = T, path = dl.path)
 
   xyz.dat <- as.data.frame(xyz.dat)
   xyz.ras <- raster::rasterize(xyz.dat[, 1:2], ref.ras, xyz.dat[, -(1:2)], fun = fun) # fun = mean

@@ -1,3 +1,4 @@
+# summarize raster maps
 library(tidyverse)
 library(sp)
 library(SpatialPack)

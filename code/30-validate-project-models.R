@@ -1,3 +1,4 @@
+# validate and project models
 library(tidyverse)
 theme_set(theme_bw())
 
@@ -42,7 +43,7 @@ wis.dat %>%
   facet_wrap(~ft, scale = "free_y", nrow = 6, ncol = 4) +
   theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = .5)) +
   labs(x = "Stand age (yr)", y = expression("Aboveground biomass (Mg" ~ ha^-1 * ")"))
-ggsave("figures/model vs. within-sample data.pdf", w = 10, h = 12)
+ggsave("figures/Model vs. within-sample data.pdf", w = 10, h = 12)
 
 # For past data, out-of-sample prediction ---------------------------------
 
@@ -69,7 +70,7 @@ oos.dat %>%
   facet_wrap(~ft, scale = "free_y", nrow = 6, ncol = 4) +
   theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = .5)) +
   labs(x = "Stand age (yr)", y = expression("Aboveground biomass (Mg" ~ ha^-1 * ")"))
-ggsave("figures/model vs. out-of-sample data.pdf", w = 10, h = 12)
+ggsave("figures/Model vs. out-of-sample data.pdf", w = 10, h = 12)
 
 # For future data, out-of-sample prediction (projection) ------------------
 
