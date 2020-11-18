@@ -6,10 +6,10 @@ library(sp)
 library(tmap)
 theme_set(theme_bw())
 
-all.dat <- read_rds(paste0(dat.dir, "all_dat.rds"))
-env.stat <- read_rds(paste0(dat.dir, "env_stat.rds"))
+all.dat <- read_rds("Data/all_dat.rds")
+env.stat <- read_rds("Data/env_stat.rds")
 
-coef.med <- read_rds(paste0(mod.dir, "old_jags_2e4_sum.rds")) %>%
+coef.med <- read_rds("Models/old_jags_2e4_sum.rds") %>%
   unite(para_coef, para, coef, sep = ".") %>%
   select(para_coef, ft, median) %>%
   spread(para_coef, median)
@@ -20,7 +20,7 @@ calc_fut_mu <- function(clim.dat, fut.yr) {
   pred.dat <- all.dat %>%
     select(src:agb) %>%
     mutate(sag.fut = sag + as.numeric(fut.yr) - yr) %>% # extrapolate stand age
-    bind_cols(clim.dat) %>% # get climate projections
+    bind_cols(select(clim.dat, tmp, ppt)) %>% # get climate projections
     filter(
       cen == "new",
       tmp != -9999,
@@ -44,27 +44,22 @@ calc_fut_mu <- function(clim.dat, fut.yr) {
 
 # compare climate ---------------------------------------------------------
 
-rcp45.dat <- read_csv(paste0(dat.dir, "Plots_CanESM2_rcp45_r1i1p1_2079-2081YT.csv")) %>%
+rcp45.dat <- read_csv("Data/Plots_CanESM2_rcp45_r1i1p1_2079-2081YT.csv") %>%
   select(fut.yr = Year, plt = ID1, lat = Latitude, lon = Longitude, tmp = MAT, ppt = MAP)
 
-rcp85.dat <- read_csv(paste0(dat.dir, "Plots_CanESM2_rcp85_r1i1p1_2079-2081YT.csv")) %>%
+rcp85.dat <- read_csv("Data/Plots_CanESM2_rcp85_r1i1p1_2079-2081YT.csv") %>%
   select(fut.yr = Year, plt = ID1, lat = Latitude, lon = Longitude, tmp = MAT, ppt = MAP)
 
 # # compare temp data
-# clim.comp <- rcp45.dat %>% filter(fut.yr == 2079) %>%
+# clim.comp <- rcp45.dat %>%
+#   filter(fut.yr == 2079) %>%
 #   inner_join(rcp45.dat %>% filter(fut.yr == 2081),
-#              by = c('plt', 'lon', 'lat')) %>%
+#     by = c("plt", "lon", "lat")
+#   ) %>%
 #   filter(tmp.x != -9999, tmp.y != -9999, ppt.x != -9999, ppt.y != -9999)
-#
-#
-#
-
-
-
 
 
 # calculate plot-level mu -------------------------------------------------
-
 
 mu.2079 <- calc_fut_mu(filter(rcp85.dat, fut.yr == 2079), 2079)
 mu.2081 <- calc_fut_mu(filter(rcp85.dat, fut.yr == 2081), 2081)
@@ -75,7 +70,7 @@ plot(mu.comp[, c("mu.2079", "mu.2081")])
 
 # raster and maps ---------------------------------------------------------
 
-rasterize_north_america <- function(xyz.dat, fun = mean, res = 10, dl.path = "~/Downloads") {
+rasterize_north_america <- function(xyz.dat, fun = mean, res = 10, dl.path = tempdir()) {
   # function to rasterize at 10 min by 10 min resolution, using WorldClim as reference
 
   ref.ras <- raster::getData("worldclim", var = "bio", res = res, download = T, path = dl.path)
@@ -119,7 +114,7 @@ col.vec <- c(
 )
 
 # north america maps
-bkgd.poly <- read_rds(paste0(dat.dir, "NA_shp.rds"))
+bkgd.poly <- read_rds("Data/NA_shp.rds")
 mu.col.brk <- c(-Inf, seq(50, 800, by = 50), Inf)
 
 # map 1, future y hat
