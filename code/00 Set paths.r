@@ -1,6 +1,6 @@
 # set paths for input & output
-file.symlink("/data/ZHULAB/FIA/Growth/Data/", "Data")
-file.symlink("/data/ZHULAB/FIA/Growth/Models/", "Models")
+file.symlink("/data/ZHULAB/FIA/Growth/Data/", "data")
+file.symlink("/data/ZHULAB/FIA/Growth/Models/", "models")
 
-dir.create("Figures/")
-dir.create("Tables/")
+dir.create("figures/")
+dir.create("tables/")
