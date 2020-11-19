@@ -77,7 +77,7 @@ ggsave("figures/Model vs. out-of-sample data.pdf", w = 10, h = 12)
 agb.fut.dat <- NULL
 for (rcp.tag in c("rcp45", "rcp85")) { # loop through rcp and future years
   for (fyr.tag in c("2025", "2055", "2085")) {
-    clim.file <- paste0("data/CMIP_", rcp.tag, "_", fyr.tag, ".csv")
+    clim.file <- paste0("data-raw/CMIP/CMIP_", rcp.tag, "_", fyr.tag, ".csv.gz")
 
     pred.dat <- all.dat %>%
       select(src:agb) %>%

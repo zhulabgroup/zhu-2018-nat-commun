@@ -78,7 +78,7 @@ col.vec <- c(
 )
 
 # north america maps
-bkgd.poly <- read_rds("data/NA_shp.rds")
+bkgd.poly <- read_rds("data-raw/NA_shp.rds")
 col.brk.bio <- c(-Inf, seq(50, 550, by = 50), Inf)
 col.brk.rat <- c(-Inf, seq(.1, .9, by = .1), Inf) * 100
 col.brk.bio.past <- c(-Inf, seq(50, 400, by = 50), Inf)
