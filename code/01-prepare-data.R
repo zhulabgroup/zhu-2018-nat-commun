@@ -5,7 +5,7 @@ theme_set(theme_bw())
 # Raw data ----------------------------------------------------------------
 
 # Read CSV data file
-all.dat <- read.csv("data/All_data.csv", stringsAsFactors = F) %>% as_tibble() # can't use read_csv
+all.dat <- read_csv("data/All_data.csv.gz")
 
 # Regional standardization of climate variables
 env.stat <- all.dat %>%
