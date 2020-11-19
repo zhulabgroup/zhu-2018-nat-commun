@@ -8,7 +8,7 @@ new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[, 
 if (length(new.packages)) install.packages(new.packages)
 
 # set paths for input & output
-file.symlink("/data/ZHULAB/FIA/Growth/Data/", "data")
+file.symlink("/data/ZHULAB/FIA/Growth/Data/", "data-raw")
 file.symlink("/data/ZHULAB/FIA/Growth/Models/", "models")
 
 dir.create("figures/")
